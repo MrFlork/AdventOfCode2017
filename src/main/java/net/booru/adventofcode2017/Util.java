@@ -13,6 +13,13 @@ class Util
             throw new AssertionError("test failed: value = " + value + ", expected = " + expected);
         }
     }
+    public static void requireNot(final int value, final int expected)
+    {
+        if (value == expected)
+        {
+            throw new AssertionError("test failed: value = " + value + ", expected != " + expected);
+        }
+    }
 
     static int[] readIntegersFromChars(final BufferedReader bufferedReader) throws IOException
     {
