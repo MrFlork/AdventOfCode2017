@@ -2,6 +2,8 @@ package net.booru.adventofcode2017;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 class Util
@@ -66,6 +68,11 @@ class Util
             data = readIntegers(bufferedReader, separator);
         }
         return rows;
+    }
+
+    public static int[] readLinesAsIntegers(final String fileName) throws IOException
+    {
+        return Files.readAllLines(Paths.get(fileName)).stream().mapToInt(Integer::parseInt).toArray();
     }
 
 }
