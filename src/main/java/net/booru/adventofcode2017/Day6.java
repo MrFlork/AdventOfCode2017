@@ -10,11 +10,14 @@ class Day6
     {
         test();
 
-        int cycles = reAllocate(Util.readIntegers("day6.in", "\t"));
+        int cycles = reAllocate(Util.readIntegers("day6.in", "\t"), 0);
         System.out.println("Cycles: " + cycles);
+
+        int cycles2 = reAllocate(Util.readIntegers("day6.in", "\t"), 1);
+        System.out.println("Cycles2: " + cycles2);
     }
 
-    private static int reAllocate(final int[] memoryBanks)
+    private static int reAllocate(final int[] memoryBanks, int allowedLoops)
     {
         final HashSet<String> seenStates = new HashSet<>(10000);
         seenStates.add(Arrays.toString(memoryBanks));
@@ -28,10 +31,33 @@ class Day6
             final String state = Util.toString(memoryBanks);
             if (seenStates.contains(state))
             {
-                return cycles;
+                if (allowedLoops <= 0)
+                {
+                    return cycles;
+                }
+                else
+                {
+                    return loopUntil(state, memoryBanks);
+                }
             }
 
             seenStates.add(state);
+        }
+    }
+
+    private static int loopUntil(final String targetState, final int[] memoryBanks)
+    {
+        int cycles = 0;
+        while (true)
+        {
+            cycles++;
+            redistribute(memoryBanks); // side-effect in-mem redistribute
+
+            final String state = Util.toString(memoryBanks);
+            if (targetState.equals(state))
+            {
+                return cycles;
+            }
         }
     }
 
@@ -58,7 +84,8 @@ class Day6
 
     private static void test()
     {
-        Util.require(reAllocate(new int[]{0, 2, 7, 0}), 5);
+        Util.require(reAllocate(new int[]{0, 2, 7, 0}, 0), 5);
+        Util.require(reAllocate(new int[]{0, 2, 7, 0}, 1), 4);
 
         System.out.println("All tests ok");
     }
