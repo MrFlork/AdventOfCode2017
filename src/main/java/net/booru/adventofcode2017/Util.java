@@ -40,6 +40,13 @@ class Util
         return data;
     }
 
+    static int[] readIntegers(final String fileName, final String separator) throws IOException
+    {
+        try (final BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(fileName)))
+        {
+            return readIntegers(bufferedReader, separator);
+        }
+    }
     static int[] readIntegers(final BufferedReader bufferedReader, final String separator) throws IOException
     {
         final String line = bufferedReader.readLine();
@@ -73,6 +80,16 @@ class Util
     public static int[] readLinesAsIntegers(final String fileName) throws IOException
     {
         return Files.readAllLines(Paths.get(fileName)).stream().mapToInt(Integer::parseInt).toArray();
+    }
+
+    public static String toString(final int[] intArray)
+    {
+        final StringBuilder buffer = new StringBuilder(intArray.length);
+        for (final int n : intArray)
+        {
+            buffer.append(n);
+        }
+        return buffer.toString();
     }
 
 }
