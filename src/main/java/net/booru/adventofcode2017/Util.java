@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 class Util
 {
-    static void require(int value, int expected)
+    static <T> void require(T value, T expected)
     {
-        if (value != expected)
+        if (!value.equals(expected))
         {
             throw new AssertionError("test failed: value = " + value + ", expected = " + expected);
         }
