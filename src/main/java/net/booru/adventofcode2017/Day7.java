@@ -37,11 +37,11 @@ class Day7
         int iWeightTotal;
         final ArrayList<String> iProgramsAbove;
 
-        private Program(final String name, final int weight, final ArrayList<String> programsAbove)
+        private Program(final String name, final int weight, final int weightTotal, final ArrayList<String> programsAbove)
         {
             iName = name;
             iWeight = weight;
-            iWeightTotal = weight;
+            iWeightTotal = weightTotal;
             iProgramsAbove = programsAbove;
         }
 
@@ -58,10 +58,10 @@ class Day7
                 final ArrayList<String> above =
                     Arrays.stream(possibleAbove[1].split(",")).map(String::trim).collect(Collectors.toCollection(ArrayList::new));
 
-                return new Program(name, weight, above);
+                return new Program(name, weight, -1, above);
             }
 
-            return new Program(name, weight, new ArrayList<>(0));
+            return new Program(name, weight, -1, new ArrayList<>(0));
         }
 
         public ArrayList<Program> getProgramsAbove(final HashMap<String, Program> programsMap)
@@ -139,38 +139,39 @@ class Day7
             weightTotal += program.iWeightTotal;
         }
 
-        final boolean isBalanced = programs.stream().allMatch(p -> programs.get(0).iWeightTotal == p.iWeightTotal);
+        final int firstWeight = programs.get(0).iWeightTotal;
+        final boolean isBalanced = programs.stream().allMatch(p -> p.iWeightTotal == firstWeight);
         if (isBalanced)
         {
             return weightTotal;
         }
         else
         {
-            // we don't know if the unbalanced node is too heavy or too light.
-            final ArrayList<Program> programsOrdered = new ArrayList<>(programs);
-            programsOrdered.sort(Comparator.comparing(p -> p.iWeightTotal));
+            final int normalWeight = getNormalWeight(programs);
+            final Program incorrectWeight = programs.stream().filter(program -> program.iWeightTotal != normalWeight).findFirst().get();
+            final int difference = incorrectWeight.iWeightTotal - normalWeight;
 
-            final Program first = programsOrdered.get(0);
-            final Program last = programsOrdered.get(programsOrdered.size() - 1);
-            final int unbalance = last.iWeightTotal - first.iWeightTotal;
-
-            final boolean isLastProgramUnbalanced = first.iWeightTotal == programsOrdered.get(1).iWeightTotal;
-            if (isLastProgramUnbalanced)
-            {
-                throw new Result(last.iWeight - unbalance);
-            }
-            else
-            {
-                throw new Result(first.iWeight + unbalance);
-            }
+            throw new Result(incorrectWeight.iWeight - difference);
         }
     }
 
-    // yey exception for flow-control :(
+    private static int getNormalWeight(final ArrayList<Program> programs)
+    {
+        // Only one is different
+        for (int i = 0; i < programs.size()-1; i++)
+        {
+            if (programs.get(i).iWeightTotal == programs.get(i+1).iWeightTotal)
+            {
+                return programs.get(i).iWeightTotal;
+            }
+        }
+        return 0; // this will never happen if the input is correct
+    }
+
+    // yey \o/ exception for flow-control :(
     private static class Result extends Exception
     {
-        int result;
-
+        final int result;
         public Result(final int result)
         {
             this.result = result;
@@ -192,38 +193,31 @@ class Day7
 
     private static void test()
     {
-        ArrayList<Program> programs = new ArrayList<>(Arrays.asList(Program.of("pbga (66)"),
-                                                                    Program.of("xhth (57)"),
-                                                                    Program.of("ebii (61)"),
-                                                                    Program.of("havc (66)"),
-                                                                    Program.of("ktlj (57)"),
-                                                                    Program.of("fwft (72) -> ktlj, cntj, xhth"),
-                                                                    Program.of("qoyq (66)"),
-                                                                    Program.of("padx (45) -> pbga, havc, qoyq"),
-                                                                    Program.of("tknk (41) -> ugml, padx, fwft"),
-                                                                    Program.of("jptl (61)"),
-                                                                    Program.of("ugml (68) -> gyxo, ebii, jptl"),
-                                                                    Program.of("gyxo (61)"),
-                                                                    Program.of("cntj (57)")));
+        final ArrayList<Program> programs =
+            new ArrayList<>(Arrays.asList(Program.of("pbga (66)"),
+                                          Program.of("xhth (57)"),
+                                          Program.of("ebii (61)"),
+                                          Program.of("havc (66)"),
+                                          Program.of("ktlj (57)"),
+                                          Program.of("fwft (72) -> ktlj, cntj, xhth"),
+                                          Program.of("qoyq (66)"),
+                                          Program.of("padx (45) -> pbga, havc, qoyq"),
+                                          Program.of("tknk (41) -> ugml, padx, fwft"),
+                                          Program.of("jptl (61)"),
+                                          Program.of("ugml (68) -> gyxo, ebii, jptl"),
+                                          Program.of("gyxo (61)"),
+                                          Program.of("cntj (57)")));
 
-        Util.require(getHeaviest(programs).iName, "tknk");
-
-        programs = new ArrayList<>(Arrays.asList(Program.of("pbga (66)"),
-                                                 Program.of("xhth (57)"),
-                                                 Program.of("ebii (61)"),
-                                                 Program.of("havc (66)"),
-                                                 Program.of("ktlj (57)"),
-                                                 Program.of("fwft (72) -> ktlj, cntj, xhth"),
-                                                 Program.of("qoyq (66)"),
-                                                 Program.of("padx (45) -> pbga, havc, qoyq"),
-                                                 Program.of("tknk (41) -> ugml, padx, fwft"),
-                                                 Program.of("jptl (61)"),
-                                                 Program.of("ugml (68) -> gyxo, ebii, jptl"),
-                                                 Program.of("gyxo (61)"),
-                                                 Program.of("cntj (57)")));
-        Util.require(findUnbalance(programs), 60);
+        Util.require(getHeaviest(TEST_copy(programs)).iName, "tknk");
+        Util.require(findUnbalance(TEST_copy(programs)), 60);
 
         System.out.println("All tests ok");
     }
 
+    // since mutable programs *sigh*
+    static ArrayList<Program> TEST_copy(final ArrayList<Program> programs)
+    {
+        return programs.stream().map(p->new Program(p.iName, p.iWeight, p.iWeightTotal, p.iProgramsAbove))
+                       .collect(Collectors.toCollection(ArrayList::new));
+    }
 }
