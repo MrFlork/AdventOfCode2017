@@ -19,7 +19,7 @@ class Day8
         int value = part1(Files.readAllLines(Paths.get("day8.in")));
 
         System.out.println("part1: " + value);
-
+        System.out.println("part2: " + Operator.cMaxValueReached);
     }
 
     private static int part1(final List<String> lines) throws IOException
@@ -106,12 +106,16 @@ class Day8
 
     static class Operator
     {
+        static int cMaxValueReached = 0;
+
         private final String iRegister;
         private final int iValueUpdate;
 
         public void execute(final HashMap<String, Integer> registers)
         {
             int registerValue = registers.get(iRegister) + iValueUpdate;
+
+            cMaxValueReached = registerValue > cMaxValueReached ? registerValue : cMaxValueReached;
 
             registers.put(iRegister, registerValue);
         }
