@@ -9,6 +9,7 @@ public class Main
         if (args.length == 0)
         {
             Day9.run();
+            Day9_2.run();
         }
         else
         {
@@ -23,6 +24,7 @@ public class Main
                 case "7"    : Day7.run(); break;
                 case "8"    : Day8.run(); break;
                 case "9"    : Day9.run(); break;
+                case "9_2"  : Day9_2.run(); break;
             }
         }
     }

@@ -18,7 +18,6 @@ class Day9
         int value = part1(Files.readAllLines(Paths.get("day9.in")).get(0));
 
         System.out.println("part1: " + value);
-        System.out.println("part2: ");
     }
 
     private static int part1(final String line) throws IOException
