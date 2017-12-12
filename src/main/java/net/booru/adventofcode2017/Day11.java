@@ -16,6 +16,7 @@ class Day11
         int value = part1(Files.readAllLines(Paths.get("day11.in")).get(0));
 
         System.out.println("part1: " + value);
+        System.out.println("part2: " + Hex.cMaxDistance);
     }
 
     private static int part1(final String input) throws IOException
@@ -57,6 +58,7 @@ class Day11
 
     static class Hex
     {
+        static int cMaxDistance = 0;
         final int iX;
         final int iY;
 
@@ -74,7 +76,11 @@ class Day11
 
         public Hex add(int x, int y)
         {
-            return new Hex(iX + x, iY + y);
+            final Hex hex = new Hex(iX + x, iY + y);
+            final int distanceFromOrigo = hex.getDistanceFromOrigo();
+            cMaxDistance = cMaxDistance < distanceFromOrigo ? distanceFromOrigo : cMaxDistance;
+
+            return hex;
         }
 
         public Hex moveBy(final Move direction)
