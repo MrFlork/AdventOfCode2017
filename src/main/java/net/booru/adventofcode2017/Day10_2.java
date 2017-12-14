@@ -9,12 +9,12 @@ class Day10_2
         test();
 
         final String input = "106,16,254,226,55,2,1,166,177,247,93,0,255,228,60,36";
-        String value = part2(makeInputArray(256), makeLengthArray(input));
+        String value = part2(Util.makeSequentialIntArray(256), makeLengthArray(input));
 
         System.out.println("part2: " + value);
     }
 
-    private static String part2(final int[] numbers, int[] lengths)
+    static String part2(final int[] numbers, int[] lengths)
     {
         final int rounds = 64;
         int currentPosition = 0, skipSize = 0;
@@ -36,7 +36,7 @@ class Day10_2
         return s;
     }
 
-    private static void reverseSubArray(final int[] numbers, final int length, final int fromIndex)
+    static void reverseSubArray(final int[] numbers, final int length, final int fromIndex)
     {
         if (length <= 1)
         {
@@ -55,7 +55,7 @@ class Day10_2
         }
     }
 
-    private static String getHexString(final int[] denseHash)
+    static String getHexString(final int[] denseHash)
     {
         final StringBuilder sb = new StringBuilder(32);
         for (int i : denseHash)
@@ -66,7 +66,7 @@ class Day10_2
         return sb.toString();
     }
 
-    private static int[] getDenseHash(final int[] numbers)
+    static int[] getDenseHash(final int[] numbers)
     {
         // groups of 16 are xor:ed
         final int[] denseHash = new int[(int)Math.ceil(numbers.length/16)];
@@ -78,7 +78,7 @@ class Day10_2
         return denseHash;
     }
 
-    private static int getXored(final int[] numbers, final int fromIndex, final int length)
+    static int getXored(final int[] numbers, final int fromIndex, final int length)
     {
         int xor = numbers[fromIndex];
         final int endIndex = length + fromIndex;
@@ -90,7 +90,7 @@ class Day10_2
         return xor;
     }
 
-    private static int[] makeLengthArray(final String input)
+    static int[] makeLengthArray(final String input)
     {
         final int[] postFix = {17, 31, 73, 47, 23};
         int[] numbers = new int[input.length() + postFix.length];
@@ -104,16 +104,6 @@ class Day10_2
         return numbers;
     }
 
-    private static int[] makeInputArray(final int size)
-    {
-        int[] numbers = new int[size];
-        for (int i = 0; i < size; i++)
-        {
-            numbers[i] = i;
-        }
-        return numbers;
-    }
-
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
 
@@ -124,10 +114,10 @@ class Day10_2
         Util.require(getXored(new int[]{1,2,3,4}, 0, 4), 4);
         Util.require(getXored(new int[]{0,1,2,3,4}, 1, 4), 4);
 
-        Util.require(part2(makeInputArray(256), makeLengthArray("")), "a2582a3a0e66e6e86e3812dcb672a272");
-        Util.require(part2(makeInputArray(256), makeLengthArray("AoC 2017")), "33efeb34ea91902bb2f59c9920caa6cd");
-        Util.require(part2(makeInputArray(256), makeLengthArray("1,2,3")), "3efbe78a8d82f29979031a4aa0b16a9d");
-        Util.require(part2(makeInputArray(256), makeLengthArray("1,2,4")), "63960835bcdc130f0b66d7ff4f6a5a8e");
+        Util.require(part2(Util.makeSequentialIntArray(256), makeLengthArray("")), "a2582a3a0e66e6e86e3812dcb672a272");
+        Util.require(part2(Util.makeSequentialIntArray(256), makeLengthArray("AoC 2017")), "33efeb34ea91902bb2f59c9920caa6cd");
+        Util.require(part2(Util.makeSequentialIntArray(256), makeLengthArray("1,2,3")), "3efbe78a8d82f29979031a4aa0b16a9d");
+        Util.require(part2(Util.makeSequentialIntArray(256), makeLengthArray("1,2,4")), "63960835bcdc130f0b66d7ff4f6a5a8e");
 
         System.out.println("All tests ok");
     }
