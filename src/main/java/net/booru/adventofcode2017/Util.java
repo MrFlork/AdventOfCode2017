@@ -119,4 +119,30 @@ class Util
         }
         return numbers;
     }
+
+    static void printMatrix(final int[][] matrix, final int pad)
+    {
+        for (int i = 0; i < matrix.length; i++)
+        {
+            for (int j = 0; j < matrix[i].length; j++)
+            {
+                System.out.print(String.format("%"+pad+"d ", matrix[i][j]));
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+    }
+
+    private static void printMatrix(final boolean[][] matrix, final int pad)
+    {
+        for (int i = 0; i < matrix.length; i++)
+        {
+            for (int j = 0; j < matrix[i].length; j++)
+            {
+                System.out.print(String.format("%"+pad+"d ", (matrix[i][j] ? 1 : 0) ));
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+    }
 }
