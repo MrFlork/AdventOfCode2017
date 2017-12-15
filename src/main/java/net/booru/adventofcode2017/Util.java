@@ -15,6 +15,24 @@ class Util
             throw new AssertionError("test failed: value = " + value + ", expected = " + expected);
         }
     }
+
+    static void requireArray(int[] value, int[] expected)
+    {
+        if (value.length == expected.length)
+        {
+            for (int i = 0; i < value.length; i++)
+            {
+                if(value[i] != expected[i])
+                {
+                    throw new AssertionError("test failed: value["+i+"] = " + value[i] + ", expected["+i+"] = " + expected[i]);
+                }
+            }
+            return;
+        }
+
+        throw new AssertionError("test failed: value.length = " + value.length + ", expected.length = " + expected.length);
+    }
+    
     public static void requireNot(final int value, final int expected)
     {
         if (value == expected)
