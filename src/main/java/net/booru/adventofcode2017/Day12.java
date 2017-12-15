@@ -15,8 +15,10 @@ class Day12
         test();
 
         int value = part1(Files.readAllLines(Paths.get("day12.in")));
+        int value2 = part2(Files.readAllLines(Paths.get("day12.in")));
 
         System.out.println("part1: " + value);
+        System.out.println("part2: " + value2);
     }
 
     private static int part1(final List<String> lines) throws IOException
@@ -26,6 +28,30 @@ class Day12
         int count = depthFirstSearch(nodeMap.get(0));
 
         return count;
+    }
+
+    private static int part2(final List<String> lines) throws IOException
+    {
+        final HashMap<Integer, Node> nodeMap = parseNodes(lines);
+
+        int groupCount = 0;
+        while (!nodeMap.isEmpty())
+        {
+            final Node startNode = nodeMap.entrySet().iterator().next().getValue();
+            depthFirstSearch(startNode); // will set nodes as visited
+            groupCount++;
+
+            // remove visited nodes.
+            for (Node node : nodeMap.values().stream().filter(Node::isVisited).toArray(Node[]::new))
+            {
+                if (node.isVisited())
+                {
+                    nodeMap.remove(node.getId());
+                }
+            }
+        }
+
+        return groupCount;
     }
 
     private static int depthFirstSearch(final Node node)
@@ -109,6 +135,11 @@ class Day12
         public int hashCode()
         {
             return Integer.hashCode(iId);
+        }
+
+        public int getId()
+        {
+            return iId;
         }
     }
 
