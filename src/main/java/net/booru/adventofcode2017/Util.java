@@ -145,4 +145,8 @@ class Util
         }
         System.out.println("");
     }
+
+    public static void noop()
+    {
+    }
 }
