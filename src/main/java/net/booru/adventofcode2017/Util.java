@@ -149,4 +149,40 @@ class Util
     public static void noop()
     {
     }
+
+    static boolean isNumeric(char character)
+    {
+        return character >= '0' && character <= '9';
+    }
+
+    static boolean isNumeric(String input)
+    {
+        if (input.isEmpty())
+        {
+            return false;
+        }
+
+        if (input.length() == 1)
+        {
+            return isNumeric(input.charAt(0));
+        }
+
+        if (isNumeric(input.charAt(0)) || input.charAt(0) == '-' || input.charAt(0) == '+')
+        {
+            for (int i = 1; i < input.length(); ++i)
+            {
+                if (!isNumeric(input.charAt(i)))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }
