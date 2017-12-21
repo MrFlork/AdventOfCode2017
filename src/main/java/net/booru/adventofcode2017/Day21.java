@@ -3,20 +3,44 @@ package net.booru.adventofcode2017;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class Day21
 {
-    static void run() throws IOException
+    static void run(int part) throws IOException
     {
-        test();
+        //test();
 
-        final int value = part1(Files.readAllLines(Paths.get("day21.in")), 5);
-
-        System.out.println("part1: " + value);
+        if (part == 1)
+        {
+            final int value = part1(Files.readAllLines(Paths.get("day21.in")), 5);
+            System.out.println("part1: " + value);
+        }
+        else if (part == 2)
+        {
+            final int value = part1(Files.readAllLines(Paths.get("day21.in")), 18);
+            System.out.println("part2: " + value);
+        }
+        else if (part == 3)
+        {
+            final int value = part1(Files.readAllLines(Paths.get("day21.in")), 20);
+            System.out.println("20 iterations: " + value);
+        }
+        else if (part == 4)
+        {
+            final int value = part1(Files.readAllLines(Paths.get("day21.in")), 22);
+            System.out.println("22 iterations: " + value);
+        }
+        else if (part == 5)
+        {
+            final int value = part1(Files.readAllLines(Paths.get("day21.in")), 24);
+            System.out.println("24 iterations: " + value);
+        }
     }
 
     static int part1(final List<String> lines, final int iterations)
