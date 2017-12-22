@@ -8,7 +8,7 @@ public class Main
     {
         if (args.length == 0)
         {
-            Day21.run(2);
+            Day22.run();
         }
         else
         {
@@ -49,6 +49,7 @@ public class Main
                 case "21_3" : Day21.run(3); break;
                 case "21_4" : Day21.run(4); break;
                 case "21_5" : Day21.run(5); break;
+                case "22"   : Day22.run(); break;
             }
         }
     }
